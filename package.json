@@ -1,6 +1,6 @@
 {
-  "name": "typescript-table",
-  "version": "3.0.9",
+  "name": "typescript-exportData",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
   "files": [
@@ -71,16 +71,12 @@
     "web-vitals": "^2.1.4"
   },
   "keywords": [
+    "export data",
     "table",
     "typescript",
     "react",
     "datatable",
-    "pagination",
-    "sorting",
-    "filtering",
-    "managing columns",
     "eslint",
-    "jest",
     "css3",
     "accessibility"
   ]
