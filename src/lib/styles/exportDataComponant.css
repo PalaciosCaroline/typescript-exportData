@@ -1,0 +1,114 @@
+.box-ExportData {
+  width: 180px;
+  height: 51px;
+  margin:0;
+  padding: 4px 10px;
+  position: relative;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.box-ExportData:hover{
+  background-color: #dfdfdf;
+}
+
+.box-ExportDataOpen {
+  background-color: #dfdfdf;
+}
+
+
+ul {
+  list-style: none;
+}
+
+.sr-only {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px); /* masque le contenu, mais le rend accessible pour les lecteurs d'écran */
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.toggle-btnExportData, .ExportDataLi_btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index:40;
+  white-space: nowrap;
+  height: 40px;
+  background-color: #677e11;
+  box-shadow: 0 -3px 1px -3px rgba(0, 0, 0, 0.5), 3px 0 1px -3px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border:none;
+ 
+}
+
+.toggle-btnExportData{
+  margin:0;
+  padding: 0 5px 0 15px;
+  width: 100%;
+}
+
+.ExportDataLi_btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.toggle-btnExportData:hover , .ExportDataLi_btn:hover{
+  background-color:  #7e9b16;
+}
+
+.toggle-btnExportData p{
+  margin-right: 20px;
+  width: 80px;
+  text-align: left;
+  padding-left:10px;
+}
+
+.ExportData-dropdown {
+  position: absolute;
+  z-index: 1;
+  background-color: #f9f9f9;
+  z-index:9999;
+  left:0;
+  top:47px;
+  width: 180px;
+  padding:0;
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.ExportData-dropdown ul{
+  margin:0;
+  padding:0;
+  min-height: 51px; 
+  box-sizing: border-box;
+}
+
+.ExportData-dropdown ul li{
+ height: 43px;
+ padding: 4px 10px;
+}
+
+.ExportData-dropdown ul li:hover {
+  background-color: #dfdfdf;
+}
+
+.ExportData-dropdown ul li button{
+ height: 40px;
+  width: 100%;
+}
+
+.toggle-btnExportData > svg{ 
+padding: 0 10px 0 10px;
+width: 40px;
+}
+
+.box-ExportData .btnExportOne .ExportDataLi_btn{
+  justify-content: flex-start;
+}
+
