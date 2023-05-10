@@ -108,9 +108,9 @@ you can choice to display just one bouton to export, exemple with the pdf button
 @@ Example: Table of employees @@
 ```
 
-![table](./imgTable.png "example of table")
+![table](./imgTable1.png "example of table")
 
-![table](./typeData.png "example of table")
+![table](./typeData1.png "example of table")
 
 ****************************************************************************************************************
 
