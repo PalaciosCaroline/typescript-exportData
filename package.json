@@ -12,7 +12,7 @@
   "module": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PalaciosCaroline/typescript-table.git"
+    "url": "git+https://github.com/PalaciosCaroline/typescript-exportData.git"
   },
   "dependencies": {
     "file-saver": "^2.0.5",
