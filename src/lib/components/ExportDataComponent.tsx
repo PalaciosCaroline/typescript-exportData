@@ -4,8 +4,8 @@ import { exportToCsv, exportToExcel, exportToPdf } from '../utils/exportData';
 import './../styles/exportDataComponant.css';
 
 
-interface Column {
-  isVisible: boolean;
+interface ColumnManaged {
+  isVisible?: boolean;
   property: string;
   label: string;
 }
@@ -16,7 +16,7 @@ export interface DataItem<T> {
 
 interface ExportDataComponentProps<T> {
   filteredData: DataItem<T>[];
-  columnsManaged: Column[];
+  columnsManaged: ColumnManaged[];
   csvExport?: boolean;
   excelExport?: boolean;
   pdfExport?: boolean;

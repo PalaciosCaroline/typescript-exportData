@@ -2,7 +2,7 @@ import 'jspdf-autotable';
 interface Column {
     label: string;
     property: string;
-    isVisible: boolean;
+    isVisible?: boolean;
 }
 export interface DataItem<T> {
     [key: string]: T | undefined;
