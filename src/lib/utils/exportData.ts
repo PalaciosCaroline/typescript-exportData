@@ -1,8 +1,8 @@
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import 'jspdf-autotable';
-import { jsPDF } from "jspdf";
-import { autoTable } from "./../../types/jspdf-autotable/index";
+import { jsPDF } from 'jspdf';
+import { autoTable } from './../../types/jspdf-autotable/index';
 
 interface Column {
   label: string;
@@ -14,7 +14,10 @@ export interface DataItem<T> {
   [key: string]: T | undefined;
 }
 
-const formatDataForExport = <T>(data: DataItem<T>[], columns: Column[]): (T | undefined)[][] => {
+const formatDataForExport = <T>(
+  data: DataItem<T>[],
+  columns: Column[],
+): (T | undefined)[][] => {
   return data.map((row) => {
     return columns
       .filter((column) => column.isVisible)
@@ -28,11 +31,11 @@ const formatHeadersForExport = (columns: Column[]): string[] => {
     .map((column) => column.label);
 };
 
-// Fonction pour exporter les données en CSV
+// export format CSV
 export const exportToCsv = <T>(
   data: DataItem<T>[],
   columns: Column[],
-  filename: string
+  filename: string,
 ): void => {
   const formattedData = formatDataForExport(data, columns);
   const headers = formatHeadersForExport(columns);
@@ -44,11 +47,11 @@ export const exportToCsv = <T>(
   saveAs(blob, filename);
 };
 
-// Fonction pour exporter les données en Excel
+// expoort format Excel
 export const exportToExcel = <T>(
   data: DataItem<T>[],
   columns: Column[],
-  filename: string
+  filename: string,
 ): void => {
   const formattedData = formatDataForExport(data, columns);
   const headers = formatHeadersForExport(columns);
@@ -58,11 +61,11 @@ export const exportToExcel = <T>(
   XLSX.writeFile(workbook, filename);
 };
 
-// Fonction pour exporter les données en PDF
+// export format PDF
 export const exportToPdf = <T>(
   data: DataItem<T>[],
   columns: Column[],
-  filename: string
+  filename: string,
 ): void => {
   const formattedData = formatDataForExport(data, columns);
   const headers = formatHeadersForExport(columns);

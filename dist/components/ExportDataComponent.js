@@ -22,7 +22,8 @@ export var ExportDataComponent = function (_a) {
         setIsDropDownOpen(!isDropDownOpen);
     };
     var handleClickOutside = function (event) {
-        if (exportDataRef.current && !exportDataRef.current.contains(event.target)) {
+        if (exportDataRef.current &&
+            !exportDataRef.current.contains(event.target)) {
             setIsDropDownOpen(false);
         }
     };
@@ -45,16 +46,13 @@ export var ExportDataComponent = function (_a) {
     }, [handleKeyDown]);
     var numberOfExportOptions = [csvExport, excelExport, pdfExport].filter(Boolean).length;
     var handleExportCsv = function () {
-        exportToCsv(filteredData, columnsManaged, "export.csv");
+        exportToCsv(filteredData, columnsManaged, 'export.csv');
     };
     var handleExportExcel = function () {
-        exportToExcel(filteredData, columnsManaged, "export.xlsx");
+        exportToExcel(filteredData, columnsManaged, 'export.xlsx');
     };
     var handleExportPdf = function () {
-        exportToPdf(filteredData, columnsManaged, "export.pdf");
+        exportToPdf(filteredData, columnsManaged, 'export.pdf');
     };
-    return (_jsxs("div", __assign({ className: "box-ExportData ".concat(isDropDownOpen ? 'box-ExportDataOpen' : ''), role: "menu", ref: exportDataRef }, { children: [numberOfExportOptions === 1 && (_jsxs("div", __assign({ className: 'toggle-btnExportData btnExportOne' }, { children: [csvExport && _jsx("button", __assign({ onClick: function () { return handleExportCsv(); }, className: 'ExportDataLi_btn' }, { children: _jsx("span", { children: "Export to CSV" }) })), excelExport && _jsx("button", __assign({ onClick: function () { return handleExportExcel(); }, className: 'ExportDataLi_btn' }, { children: _jsx("span", { children: "Export to Excel" }) })), pdfExport && _jsx("button", __assign({ onClick: function () { return handleExportPdf(); }, className: 'ExportDataLi_btn' }, { children: _jsx("span", { children: "Export to PDF" }) }))] }))), numberOfExportOptions > 1 && (_jsxs(_Fragment, { children: [_jsxs("button", __assign({ className: "toggle-btnExportData ".concat(isDropDownOpen ? 'btnOpenExportData' : ''), onClick: toggleDropDown, "aria-label": "export data", "aria-haspopup": "true", "aria-expanded": isDropDownOpen }, { children: [_jsx("span", __assign({ className: isDropDownOpen ? 'btnExportDataOpen' : '' }, { children: "Export" })), !isDropDownOpen ? _jsx(FiChevronDown, {}) : _jsx(FiChevronUp, {})] })), isDropDownOpen && (_jsx("div", __assign({ className: "ExportData-dropdown" }, { children: _jsxs("ul", { children: [csvExport &&
-                                    _jsx("li", __assign({ className: 'dropdownOptionExportData' }, { children: _jsx("button", __assign({ onClick: function () { return handleExportCsv(); }, className: 'ExportDataLi_btn' }, { children: "Export to CSV" })) })), excelExport &&
-                                    _jsx("li", { children: _jsx("button", __assign({ onClick: function () { return handleExportExcel(); }, className: 'ExportDataLi_btn' }, { children: "Export to Excel" })) }), pdfExport &&
-                                    _jsx("li", { children: _jsx("button", __assign({ onClick: function () { return handleExportPdf(); }, className: 'ExportDataLi_btn' }, { children: "Export to PDF" })) })] }) })))] }))] })));
+    return (_jsxs("div", __assign({ className: "box-ExportData ".concat(isDropDownOpen ? 'box-ExportDataOpen' : ''), role: "menu", ref: exportDataRef }, { children: [numberOfExportOptions === 1 && (_jsxs("div", __assign({ className: "toggle-btnExportData btnExportOne" }, { children: [csvExport && (_jsx("button", __assign({ onClick: function () { return handleExportCsv(); }, className: "ExportDataLi_btn" }, { children: _jsx("span", { children: "Export to CSV" }) }))), excelExport && (_jsx("button", __assign({ onClick: function () { return handleExportExcel(); }, className: "ExportDataLi_btn" }, { children: _jsx("span", { children: "Export to Excel" }) }))), pdfExport && (_jsx("button", __assign({ onClick: function () { return handleExportPdf(); }, className: "ExportDataLi_btn" }, { children: _jsx("span", { children: "Export to PDF" }) })))] }))), numberOfExportOptions > 1 && (_jsxs(_Fragment, { children: [_jsxs("button", __assign({ className: "toggle-btnExportData ".concat(isDropDownOpen ? 'btnOpenExportData' : ''), onClick: toggleDropDown, "aria-label": "export data", "aria-haspopup": "true", "aria-expanded": isDropDownOpen }, { children: [_jsx("span", __assign({ className: isDropDownOpen ? 'btnExportDataOpen' : '' }, { children: "Export" })), !isDropDownOpen ? _jsx(FiChevronDown, {}) : _jsx(FiChevronUp, {})] })), isDropDownOpen && (_jsx("div", __assign({ className: "ExportData-dropdown" }, { children: _jsxs("ul", { children: [csvExport && (_jsx("li", __assign({ className: "dropdownOptionExportData" }, { children: _jsx("button", __assign({ onClick: function () { return handleExportCsv(); }, className: "ExportDataLi_btn" }, { children: "Export to CSV" })) }))), excelExport && (_jsx("li", { children: _jsx("button", __assign({ onClick: function () { return handleExportExcel(); }, className: "ExportDataLi_btn" }, { children: "Export to Excel" })) })), pdfExport && (_jsx("li", { children: _jsx("button", __assign({ onClick: function () { return handleExportPdf(); }, className: "ExportDataLi_btn" }, { children: "Export to PDF" })) }))] }) })))] }))] })));
 };

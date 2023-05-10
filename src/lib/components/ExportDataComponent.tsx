@@ -3,7 +3,6 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { exportToCsv, exportToExcel, exportToPdf } from '../utils/exportData';
 import './../styles/exportDataComponant.css';
 
-
 interface ColumnManaged {
   isVisible?: boolean;
   property: string;
@@ -29,7 +28,6 @@ export const ExportDataComponent = <T,>({
   excelExport,
   pdfExport,
 }: ExportDataComponentProps<T>): JSX.Element => {
-
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const exportDataRef = useRef<HTMLDivElement>(null);
 
@@ -38,19 +36,27 @@ export const ExportDataComponent = <T,>({
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (exportDataRef.current && !exportDataRef.current.contains(event.target as Node)) {
+    if (
+      exportDataRef.current &&
+      !exportDataRef.current.contains(event.target as Node)
+    ) {
       setIsDropDownOpen(false);
     }
   };
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Tab' && isDropDownOpen) {
-      const lastMenuItem = exportDataRef.current?.querySelector('li:last-child button');
-      if (event.target === lastMenuItem && !event.shiftKey) {
-        setIsDropDownOpen(false);
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Tab' && isDropDownOpen) {
+        const lastMenuItem = exportDataRef.current?.querySelector(
+          'li:last-child button',
+        );
+        if (event.target === lastMenuItem && !event.shiftKey) {
+          setIsDropDownOpen(false);
+        }
       }
-    }
-  }, [isDropDownOpen]);
+    },
+    [isDropDownOpen],
+  );
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -62,18 +68,20 @@ export const ExportDataComponent = <T,>({
     };
   }, [handleKeyDown]);
 
-  const numberOfExportOptions = [csvExport, excelExport, pdfExport].filter(Boolean).length;
+  const numberOfExportOptions = [csvExport, excelExport, pdfExport].filter(
+    Boolean,
+  ).length;
 
   const handleExportCsv = () => {
-    exportToCsv(filteredData, columnsManaged, "export.csv");
+    exportToCsv(filteredData, columnsManaged, 'export.csv');
   };
-  
+
   const handleExportExcel = () => {
-    exportToExcel(filteredData, columnsManaged, "export.xlsx");
+    exportToExcel(filteredData, columnsManaged, 'export.xlsx');
   };
-  
+
   const handleExportPdf = () => {
-    exportToPdf(filteredData, columnsManaged, "export.pdf");
+    exportToPdf(filteredData, columnsManaged, 'export.pdf');
   };
 
   return (
@@ -82,50 +90,94 @@ export const ExportDataComponent = <T,>({
       role="menu"
       ref={exportDataRef}
     >
-        {numberOfExportOptions === 1 && (
-          <div className='toggle-btnExportData btnExportOne'>
-          {csvExport && <button onClick={() => handleExportCsv()} className='ExportDataLi_btn'><span>Export to CSV</span></button>}
-          {excelExport && <button onClick={() => handleExportExcel()} className='ExportDataLi_btn'><span>Export to Excel</span></button>}
-          {pdfExport && <button onClick={() => handleExportPdf()} className='ExportDataLi_btn'><span>Export to PDF</span></button>}
-          </div>
-        )}
-        {numberOfExportOptions > 1 && (
-        <>
+      {numberOfExportOptions === 1 && (
+        <div className="toggle-btnExportData btnExportOne">
+          {csvExport && (
             <button
-                className={`toggle-btnExportData ${isDropDownOpen ? 'btnOpenExportData' : ''}`}
-                onClick={toggleDropDown}
-                aria-label="export data"
-                aria-haspopup="true"
-                aria-expanded={isDropDownOpen}
+              onClick={() => handleExportCsv()}
+              className="ExportDataLi_btn"
             >
-                <span className={isDropDownOpen ? 'btnExportDataOpen' : ''}>Export</span>
-                {!isDropDownOpen ? <FiChevronDown /> : <FiChevronUp/>}
+              <span>Export to CSV</span>
             </button>
-            {isDropDownOpen && (
-                <div className="ExportData-dropdown">
-                    <ul>
-                      {csvExport &&
-                        <li className='dropdownOptionExportData'>  
-                         {<button onClick={() => handleExportCsv()} className='ExportDataLi_btn'>Export to CSV</button>}
-                        </li>
-                      } 
-                      {excelExport &&
-                          <li>
-                            {<button onClick={() => handleExportExcel()} className='ExportDataLi_btn'>Export to Excel</button>}
-                          </li>
-                      }
-                      {pdfExport &&
-                          <li>                     
-                           {<button onClick={() => handleExportPdf()} className='ExportDataLi_btn'>Export to PDF</button>}
-                          </li>
-                      }
-                    </ul>
-                </div>
-            )}
-            </>
           )}
-        </div>        
-    );
+          {excelExport && (
+            <button
+              onClick={() => handleExportExcel()}
+              className="ExportDataLi_btn"
+            >
+              <span>Export to Excel</span>
+            </button>
+          )}
+          {pdfExport && (
+            <button
+              onClick={() => handleExportPdf()}
+              className="ExportDataLi_btn"
+            >
+              <span>Export to PDF</span>
+            </button>
+          )}
+        </div>
+      )}
+      {numberOfExportOptions > 1 && (
+        <>
+          <button
+            className={`toggle-btnExportData ${
+              isDropDownOpen ? 'btnOpenExportData' : ''
+            }`}
+            onClick={toggleDropDown}
+            aria-label="export data"
+            aria-haspopup="true"
+            aria-expanded={isDropDownOpen}
+          >
+            <span className={isDropDownOpen ? 'btnExportDataOpen' : ''}>
+              Export
+            </span>
+            {!isDropDownOpen ? <FiChevronDown /> : <FiChevronUp />}
+          </button>
+          {isDropDownOpen && (
+            <div className="ExportData-dropdown">
+              <ul>
+                {csvExport && (
+                  <li className="dropdownOptionExportData">
+                    {
+                      <button
+                        onClick={() => handleExportCsv()}
+                        className="ExportDataLi_btn"
+                      >
+                        Export to CSV
+                      </button>
+                    }
+                  </li>
+                )}
+                {excelExport && (
+                  <li>
+                    {
+                      <button
+                        onClick={() => handleExportExcel()}
+                        className="ExportDataLi_btn"
+                      >
+                        Export to Excel
+                      </button>
+                    }
+                  </li>
+                )}
+                {pdfExport && (
+                  <li>
+                    {
+                      <button
+                        onClick={() => handleExportPdf()}
+                        className="ExportDataLi_btn"
+                      >
+                        Export to PDF
+                      </button>
+                    }
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
 };
-
-
