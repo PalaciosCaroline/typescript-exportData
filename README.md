@@ -48,9 +48,21 @@ Use the component like this with importing ExportDataComponent(dropdown to expor
       pdfExport={true} // to have an export bouton for pdf format
     />`
 
+![table](./exportData.png "example with export buttons")
+
+```js
+const columnsExample: Column[] = [
+    { label: 'First Name', property: 'firstName', isVisible:true, disableSort:true, disableFilter:true },
+    { label: 'Last Name', property: 'lastName' , isVisible:true },
+    { label: 'Start Date', property: 'startDate' , dateFormat: 'DD/MM/YYYY', isVisible:true },
+    { label: 'Department', property: 'department', isVisible:true },
+    { label: 'Date of Birth', property: 'dateOfBirth', isVisible:true,dateFormat: 'DD/MM/YYYY',   disableSort:true, disableFilter:true }  
+];
+```
+
 ## Use ExportDataComponent after install 'typescript-table': 
 
-Exemple with Table and ExportDataComponent.
+Exemple ExportDataComponent with Table.
 
 ![table](./dropdownExport.png "example with export buttons")
 

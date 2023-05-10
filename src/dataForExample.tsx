@@ -1,6 +1,7 @@
 interface Column {
   label: string;
   property: string;
+  isVisible: boolean;
   dateFormat?: string;
   disableSort?: boolean;
   disableFilter?: boolean;
@@ -8,18 +9,16 @@ interface Column {
 
  
  const columnsExample: Column[] = [
-    { label: 'First Name', property: 'firstName', disableSort:true, disableFilter:true },
-    { label: 'Last Name', property: 'lastName' },
-    { label: 'Start Date', property: 'startDate' , dateFormat: 'DD/MM/YYYY' },
-    { label: 'Department', property: 'department' },
-    { label: 'Date of Birth', property: 'dateOfBirth',dateFormat: 'DD/MM/YYYY',   disableSort:true, disableFilter:true },
-    { label: 'Street', property: 'street', disableSort:true, disableFilter:true},
-    { label: 'City', property: 'city' },
-    { label: 'State', property: 'state',disableSort:true },
-    { label: 'Zip Code', property: 'zipCode', disableSort:true },
+    { label: 'First Name', property: 'firstName', isVisible:true, disableSort:true, disableFilter:true },
+    { label: 'Last Name', property: 'lastName' , isVisible:true },
+    { label: 'Start Date', property: 'startDate' , dateFormat: 'DD/MM/YYYY', isVisible:true },
+    { label: 'Department', property: 'department', isVisible:true },
+    { label: 'Date of Birth', property: 'dateOfBirth', isVisible:true,dateFormat: 'DD/MM/YYYY',   disableSort:true, disableFilter:true },
+    { label: 'Street', property: 'street', isVisible:true, disableSort:true, disableFilter:true},
+    { label: 'City', property: 'city', isVisible:true },
+    { label: 'State', property: 'state', isVisible:true,disableSort:true },
+    { label: 'Zip Code', property: 'zipCode', isVisible:true, disableSort:true },
 ];
-
-
 
   interface Data {
     [key: string]: string | undefined;
@@ -34,8 +33,6 @@ interface Column {
     zipCode: string | undefined;
   }
   
-  
- 
   const datasExample:  Data[] = [
     {
     firstName: 'John',

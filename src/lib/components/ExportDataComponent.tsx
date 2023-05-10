@@ -3,21 +3,33 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { exportToCsv, exportToExcel, exportToPdf } from '../utils/exportData';
 import './../styles/exportDataComponant.css';
 
-interface ExportDataComponentProps {
-  filteredData: any[];
-  columnsManaged: any[];
+
+interface Column {
+  isVisible: boolean;
+  property: string;
+  label: string;
+}
+
+export interface DataItem<T> {
+  [key: string]: T | undefined;
+}
+
+interface ExportDataComponentProps<T> {
+  filteredData: DataItem<T>[];
+  columnsManaged: Column[];
   csvExport?: boolean;
   excelExport?: boolean;
   pdfExport?: boolean;
 }
 
-export const ExportDataComponent: React.FC<ExportDataComponentProps> = ({
+export const ExportDataComponent = <T,>({
   filteredData,
   columnsManaged,
   csvExport,
   excelExport,
   pdfExport,
-}) => {
+}: ExportDataComponentProps<T>): JSX.Element => {
+
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const exportDataRef = useRef<HTMLDivElement>(null);
 
