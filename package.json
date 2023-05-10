@@ -1,6 +1,6 @@
 {
   "name": "typescript-exportdata",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "auteur": "Palacios Caroline",
   "types": "dist/index.d.ts",
