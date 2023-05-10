@@ -1,4 +1,4 @@
-# 'typescript-exportData': A package for easily importing ExportDataComponent dropdown with buttons to export a data of table.
+# 'typescript-exportdata': A package for easily importing ExportDataComponent dropdown with buttons to export a data of table.
 
 The ExportDataComponent React and typescript component allows you to export table data in various formats. It is 100% customizable, accessible.
 
@@ -24,19 +24,15 @@ with npm:
 
     `npm install file-saver xlsx jspdf jspdf-autotable`
 
-    `npm install typescript-exportData`
+    `npm install typescript-exportdata`
 
 or yarn:
 
-    `yarn add typescript-exportData`
+    `yarn add typescript-exportdata`
 
 ## Import in your application
 
-  `import { ExportDataComponent } from 'typescript-exportData';`
-
-  (if you use with <Table/> 'of typescript-table' also import :
-  `import {Table} from 'typescript-table'`
-  )
+  `import { ExportDataComponent } from 'typescript-exportdata';`
 
 Use the component like this with importing ExportDataComponent(dropdown to export data):
 
@@ -71,6 +67,7 @@ Install before using buttons's functionality.
 `npm install file-saver xlsx jspdf jspdf-autotable`
 
 after
+
   `import {Table} from 'typescript-table'`
   `import {ExportDataComponent} from 'typescript-exportData'`
 
