@@ -1,6 +1,6 @@
 .box-ExportData {
   width: 170px;
-  height: 51px;
+  height: 45px;
   margin: 0;
   position: relative;
   text-align: center;
@@ -31,7 +31,7 @@ ul {
   justify-content: space-between;
   z-index: 40;
   white-space: nowrap;
-  height: 51px;
+  height: 45px;
   background-color: #677e11;
   width: 100%;
   border: none;
@@ -78,12 +78,12 @@ ul {
 .ExportData-dropdown ul {
   margin: 0;
   padding: 0;
-  min-height: 51px;
+  min-height: 45px;
   box-sizing: border-box;
 }
 
 .ExportData-dropdown ul li {
-  height: 51px;
+  height: 45px;
   padding: 0;
   border-top: 1px solid #d4d3d3;
 }

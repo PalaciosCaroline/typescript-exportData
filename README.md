@@ -3,6 +3,7 @@
 The ExportDataComponent React and typescript component allows you to export table data in various formats. It is 100% customizable, accessible.
 
 ![React](https://img.shields.io/badge/React-v18.2.0-61DAFB?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0.4-3178C6?logo=typescript)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?logo=javascript)
 ![ESLint](https://img.shields.io/badge/ESLint-v8.38.0-4B32C3?logo=eslint)
 ![Accessible](https://img.shields.io/badge/Accessible-Yes-677e11?logo=accessible)
