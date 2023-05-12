@@ -113,6 +113,7 @@ you can choice to display just one bouton to export, exemple with the pdf button
     <Table
       data={datasExample}
       columns={columnsExample}
+      headerProperty='label' 
       renderExportDataComponent={(filteredData, columnsManaged) => (
         <ExportDataComponent
           filteredData={filteredData} // don't change this props
