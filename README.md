@@ -37,25 +37,40 @@ or yarn:
 
 Use the component like this with importing ExportDataComponent(dropdown to export data):
 
-  `<ExportDataComponent
+```js
+  <ExportDataComponent
       filteredData={filteredData} //don't change this
       columnsManaged={columnsManaged}  //don't change this
+      headerProperty='label'  // label is the property used to give the custom name for the column headers
       csvExport={true} // to have an export bouton for csv format
       excelExport={true} // to have an export bouton for excel format
       pdfExport={true} // to have an export bouton for pdf format
-    />`
-
-![table](./exportData.png "example with export buttons")
+    />
+```
 
 ```js
 const columnsExample: Column[] = [
-    { label: 'First Name', property: 'firstName', isVisible:true, disableSort:true, disableFilter:true },
+    { label: 'First Name', property: 'firstName', isVisible:true },
     { label: 'Last Name', property: 'lastName' , isVisible:true },
-    { label: 'Start Date', property: 'startDate' , dateFormat: 'DD/MM/YYYY', isVisible:true },
+    { label: 'Start Date', property: 'startDate', isVisible:true },
     { label: 'Department', property: 'department', isVisible:true },
-    { label: 'Date of Birth', property: 'dateOfBirth', isVisible:true,dateFormat: 'DD/MM/YYYY',   disableSort:true, disableFilter:true }  
+    { label: 'Date of Birth', property: 'dateOfBirth', isVisible:false}  //isVisible: false to make the data of this column hidden
 ];
 ```
+
+![table](./exportData.png "example with export buttons")
+
+Each column should be an object with the following properties:
+
+  - property (required): The name of the property in the data that represents the value of the column.
+  - headerProperty (optional): The property chosen to give the custom name for the column headers. If provided, it will be used instead of the property property.  The property property will be used as the default column header
+  - isVisible (optional): A boolean value to determine if the column should be included in the export. If no column has isVisible set to true or if the isVisible property is absent from all columns, all columns will be included in the export by default. If you want to include only specific columns in the export, set isVisible to true for those specific columns.
+
+When you export data, the system takes into account the isVisible property of each column. "By default, if no column has the isVisible property set to true, or if the isVisible property is absent from the columns, all columns will be included in the export.
+
+If you wish to customize the export and only include certain columns, you can do so by setting the isVisible property to true for those specific columns. For instance, if you have a 'Price' column and you want it included in the export, make sure that isVisible is set to true for that column.
+
+Note that if at least one column has isVisible set to true, only those columns will be included in the export. Columns without isVisible set or with isVisible set to false will be excluded from the export."
 
 ## Use ExportDataComponent after install 'typescript-table': 
 
@@ -70,37 +85,43 @@ Install before using buttons's functionality.
 after
 
   `import {Table} from 'typescript-table'`
+
   `import {ExportDataComponent} from 'typescript-exportData'`
 
-  `<Table
-      data={datasExample}
-      columns={columnsExample}
-      renderExportDataComponent={(filteredData,columnsManaged) => (
-        <ExportDataComponent
-          filteredData={filteredData} //don't change this
-          columnsManaged={columnsManaged}  //don't change this
-          csvExport={true} // to have an export bouton for csv format
-          excelExport={true} // to have an export bouton for excel format
-          pdfExport={true} // to have an export bouton for pdf format
-        />
-      )}
-    />`
+```js
+  <Table
+    data={datasExample} // data to display
+    columns={columnsExample} // columns to display
+    renderExportDataComponent={(filteredData,columnsManaged) => (
+      <ExportDataComponent
+        filteredData={filteredData} //don't change this
+        columnsManaged={columnsManaged}  //don't change this
+        headerProperty='label' //don't change this
+        csvExport={true} // to have an export bouton for csv format
+        excelExport={true} // to have an export bouton for excel format
+        pdfExport={true} // to have an export bouton for pdf format
+      />
+    )}
+  />
+```
 
 you can choice to display just one bouton to export, exemple with the pdf button :
 
 ![table](./exportJustOne.png "example with one button")
 
-    `<Table
-          data={datasExample}
-          columns={columnsExample}
-          renderExportDataComponent={(filteredData, columnsManaged) => (
-            <ExportDataComponent
-              filteredData={filteredData} // don't change this props
-              columnsManaged={columnsManaged} // don't change this props
-              pdfExport={true} // just this
-            />
-          )}
-        />`
+```js
+    <Table
+      data={datasExample}
+      columns={columnsExample}
+      renderExportDataComponent={(filteredData, columnsManaged) => (
+        <ExportDataComponent
+          filteredData={filteredData} // don't change this props
+          columnsManaged={columnsManaged} // don't change this props
+          pdfExport={true} // just this
+        />
+      )}
+    />
+```
 
 ## Exemple of use
 ****************************************************************************************************************
@@ -116,7 +137,6 @@ you can choice to display just one bouton to export, exemple with the pdf button
 ****************************************************************************************************************
 
 To use this package, you can use the examples like the data in the following example.
-
 
 ## Customize the style'component
 

@@ -3,11 +3,20 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { exportToCsv, exportToExcel, exportToPdf } from '../utils/exportData';
 import './../styles/exportDataComponant.css';
 
-interface ColumnManaged {
+// interface ColumnManaged {
+//   isVisible?: boolean;
+//   property: string;
+//   label?: string;
+// }
+
+interface ColumnBase {
   isVisible?: boolean;
   property: string;
-  label: string;
 }
+
+type ColumnManaged<T = any> = ColumnBase & {
+  [otherProp: string]: T | undefined;
+};
 
 export interface DataItem<T> {
   [key: string]: T | undefined;
@@ -16,6 +25,7 @@ export interface DataItem<T> {
 interface ExportDataComponentProps<T> {
   filteredData: DataItem<T>[];
   columnsManaged: ColumnManaged[];
+  headerProperty?: string | undefined;
   csvExport?: boolean;
   excelExport?: boolean;
   pdfExport?: boolean;
@@ -24,6 +34,7 @@ interface ExportDataComponentProps<T> {
 export const ExportDataComponent = <T,>({
   filteredData,
   columnsManaged,
+  headerProperty,
   csvExport,
   excelExport,
   pdfExport,
@@ -73,15 +84,15 @@ export const ExportDataComponent = <T,>({
   ).length;
 
   const handleExportCsv = () => {
-    exportToCsv(filteredData, columnsManaged, 'export.csv');
+    exportToCsv(filteredData, columnsManaged,headerProperty, 'export.csv');
   };
 
   const handleExportExcel = () => {
-    exportToExcel(filteredData, columnsManaged, 'export.xlsx');
+    exportToExcel(filteredData, columnsManaged,headerProperty, 'export.xlsx');
   };
 
   const handleExportPdf = () => {
-    exportToPdf(filteredData, columnsManaged, 'export.pdf');
+    exportToPdf(filteredData, columnsManaged,headerProperty, 'export.pdf');
   };
 
   return (
