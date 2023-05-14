@@ -12,7 +12,7 @@ export interface DataItem<T> {
 interface ExportDataComponentProps<T> {
     filteredData: DataItem<T>[];
     columnsManaged: ColumnManaged[];
-    headerProperty?: string | undefined;
+    headerProperty?: string;
     csvExport?: boolean;
     excelExport?: boolean;
     pdfExport?: boolean;

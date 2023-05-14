@@ -3,11 +3,6 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { exportToCsv, exportToExcel, exportToPdf } from '../utils/exportData';
 import './../styles/exportDataComponant.css';
 
-// interface ColumnManaged {
-//   isVisible?: boolean;
-//   property: string;
-//   label?: string;
-// }
 
 interface ColumnBase {
   isVisible?: boolean;
@@ -25,7 +20,7 @@ export interface DataItem<T> {
 interface ExportDataComponentProps<T> {
   filteredData: DataItem<T>[];
   columnsManaged: ColumnManaged[];
-  headerProperty?: string | undefined;
+  headerProperty?: string;
   csvExport?: boolean;
   excelExport?: boolean;
   pdfExport?: boolean;
