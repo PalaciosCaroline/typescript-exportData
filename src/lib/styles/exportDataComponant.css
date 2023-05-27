@@ -39,19 +39,32 @@ ul {
 }
 
 .toggle-btnExportData:hover,
+.toggle-btnExportData:focus,
+.ExportDataLi_btn.focused,
 .ExportDataLi_btn:hover {
   background-color: #7e9b16;
 }
 
 .toggle-btnExportData {
   margin: 0;
-  padding: 0 5px 0 15px;
   width: 100%;
+}
+
+.btnExportOne .ExportDataLi_btn.focused{
+  background-color: #677e11;
+}
+.btnExportOne .ExportDataLi_btn.focused:focus{
+  background-color: #7e9b16;
+}
+
+.toggle-btnsExport, .toggle-btnExportData button{
+  padding: 0 5px 0 15px;
 }
 
 .ExportDataLi_btn {
   width: 100%;
   justify-content: center;
+ 
 }
 
 .toggle-btnExportData p {

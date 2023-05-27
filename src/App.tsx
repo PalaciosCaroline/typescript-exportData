@@ -7,6 +7,7 @@ function App() {
   
   return (
     <div className="App">
+       <button style={{margin:'20px'}}>avant</button>
       <ExportDataComponent 
         filteredData={datasExample} 
         columnsManaged={columnsExample} 
@@ -15,6 +16,7 @@ function App() {
         excelExport={true}
         pdfExport={true}
         />
+        <button style={{margin:'20px'}}>Après</button>
     </div>
   );
 }

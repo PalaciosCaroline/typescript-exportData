@@ -3,7 +3,6 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { exportToCsv, exportToExcel, exportToPdf } from '../utils/exportData';
 import './../styles/exportDataComponant.css';
 
-
 interface ColumnBase {
   isVisible?: boolean;
   property: string;
@@ -26,6 +25,13 @@ interface ExportDataComponentProps<T> {
   pdfExport?: boolean;
 }
 
+interface ExportButtonProps {
+  exportHandler: () => void;
+  label: string;
+  isFocused: boolean;
+  index: number;
+}
+
 export const ExportDataComponent = <T,>({
   filteredData,
   columnsManaged,
@@ -36,10 +42,35 @@ export const ExportDataComponent = <T,>({
 }: ExportDataComponentProps<T>): JSX.Element => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const exportDataRef = useRef<HTMLDivElement>(null);
+  const [focusedButtonIndex, setFocusedButtonIndex] = useState(-1);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const singleButtonRef = useRef<HTMLButtonElement>(null);
 
-  const toggleDropDown = () => {
-    setIsDropDownOpen(!isDropDownOpen);
+  const numberOfExportOptions = [csvExport, excelExport, pdfExport].filter(
+    Boolean,
+  ).length;
+
+  const handleExportCsv = () => {
+    exportToCsv(filteredData, columnsManaged, headerProperty, 'export.csv');
   };
+
+  const handleExportExcel = () => {
+    exportToExcel(filteredData, columnsManaged, headerProperty, 'export.xlsx');
+  };
+
+  const handleExportPdf = () => {
+    exportToPdf(filteredData, columnsManaged, headerProperty, 'export.pdf');
+  };
+
+  const exportTypes = [
+    { enabled: csvExport, handler: handleExportCsv, text: 'Export to CSV' },
+    {
+      enabled: excelExport,
+      handler: handleExportExcel,
+      text: 'Export to Excel',
+    },
+    { enabled: pdfExport, handler: handleExportPdf, text: 'Export to PDF' },
+  ];
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -50,18 +81,77 @@ export const ExportDataComponent = <T,>({
     }
   };
 
+  const toggleDropDown = () => {
+    setIsDropDownOpen(!isDropDownOpen);
+  };
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'Tab' && isDropDownOpen) {
-        const lastMenuItem = exportDataRef.current?.querySelector(
-          'li:last-child button',
-        );
-        if (event.target === lastMenuItem && !event.shiftKey) {
-          setIsDropDownOpen(false);
-        }
+      switch (event.key) {
+        case 'Tab':
+          // Close dropdown on tab
+          if (isDropDownOpen) {
+            setIsDropDownOpen(false);
+          }
+          // Let the event propagate to preserve default tab behavior
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          if (isDropDownOpen) {
+            setFocusedButtonIndex((prevIndex) =>
+              prevIndex > 0 ? prevIndex - 1 : prevIndex,
+            );
+          }
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          if (isDropDownOpen) {
+            setFocusedButtonIndex((prevIndex) =>
+              prevIndex < exportTypes.length - 1 ? prevIndex + 1 : prevIndex,
+            );
+          }
+          break;
+
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          if (numberOfExportOptions === 1) {
+            // If there is only one export option, check if the single export button is currently focused
+            if (document.activeElement === singleButtonRef.current) {
+              const singleExportType = exportTypes.find(
+                (exportType) => exportType.enabled,
+              );
+              if (singleExportType) {
+                singleExportType.handler();
+              }
+            }
+          } else {
+            // Check if the dropdown toggle button is currently focused
+            if (document.activeElement === toggleButtonRef.current) {
+              if (isDropDownOpen && focusedButtonIndex >= 0) {
+                const focusedButton = exportTypes[focusedButtonIndex];
+                if (focusedButton && focusedButton.enabled) {
+                  focusedButton.handler();
+                }
+              } else if (!isDropDownOpen) {
+                toggleDropDown();
+              }
+            }
+          }
+          break;
+
+        default:
+          break;
       }
     },
-    [isDropDownOpen],
+    [
+      isDropDownOpen,
+      exportTypes,
+      focusedButtonIndex,
+      numberOfExportOptions,
+      toggleButtonRef,
+      singleButtonRef,
+    ],
   );
 
   useEffect(() => {
@@ -74,21 +164,45 @@ export const ExportDataComponent = <T,>({
     };
   }, [handleKeyDown]);
 
-  const numberOfExportOptions = [csvExport, excelExport, pdfExport].filter(
-    Boolean,
-  ).length;
+  useEffect(() => {
+    if (
+      isDropDownOpen &&
+      focusedButtonIndex >= 0 &&
+      focusedButtonIndex < exportTypes.length &&
+      exportDataRef.current // Check if exportDataRef.current is not null
+    ) {
+      const buttonElement = exportDataRef.current.querySelector(
+        `button:nth-child(${focusedButtonIndex + 1})`,
+      );
 
-  const handleExportCsv = () => {
-    exportToCsv(filteredData, columnsManaged,headerProperty, 'export.csv');
-  };
+      // Convert the element into HTMLElement before calling the focus method
+      const htmlElement = buttonElement as HTMLElement;
 
-  const handleExportExcel = () => {
-    exportToExcel(filteredData, columnsManaged,headerProperty, 'export.xlsx');
-  };
+      // Check to ensure the element exists
+      if (htmlElement) {
+        htmlElement.focus();
+      }
+    }
+  }, [focusedButtonIndex, isDropDownOpen, exportTypes.length]);
 
-  const handleExportPdf = () => {
-    exportToPdf(filteredData, columnsManaged,headerProperty, 'export.pdf');
-  };
+  const ExportButton: React.FC<ExportButtonProps> = ({
+    exportHandler,
+    label,
+    isFocused,
+    index,
+  }) => (
+    <button
+      ref={index === 0 ? singleButtonRef : null}
+      onClick={exportHandler}
+      onFocus={() => {
+        setFocusedButtonIndex(index);
+      }}
+      className={`ExportDataLi_btn ${isFocused ? 'focused' : ''}`}
+      tabIndex={0}
+    >
+      <span>{label}</span>
+    </button>
+  );
 
   return (
     <div
@@ -98,36 +212,25 @@ export const ExportDataComponent = <T,>({
     >
       {numberOfExportOptions === 1 && (
         <div className="toggle-btnExportData btnExportOne">
-          {csvExport && (
-            <button
-              onClick={() => handleExportCsv()}
-              className="ExportDataLi_btn"
-            >
-              <span>Export to CSV</span>
-            </button>
-          )}
-          {excelExport && (
-            <button
-              onClick={() => handleExportExcel()}
-              className="ExportDataLi_btn"
-            >
-              <span>Export to Excel</span>
-            </button>
-          )}
-          {pdfExport && (
-            <button
-              onClick={() => handleExportPdf()}
-              className="ExportDataLi_btn"
-            >
-              <span>Export to PDF</span>
-            </button>
+          {exportTypes.map(
+            (exportType, index) =>
+              exportType.enabled && (
+                <ExportButton
+                  isFocused={index === focusedButtonIndex}
+                  key={exportType.text}
+                  index={index}
+                  exportHandler={exportType.handler}
+                  label={exportType.text}
+                />
+              ),
           )}
         </div>
       )}
       {numberOfExportOptions > 1 && (
         <>
           <button
-            className={`toggle-btnExportData ${
+            ref={toggleButtonRef}
+            className={`toggle-btnExportData toggle-btnsExport ${
               isDropDownOpen ? 'btnOpenExportData' : ''
             }`}
             onClick={toggleDropDown}
@@ -143,41 +246,21 @@ export const ExportDataComponent = <T,>({
           {isDropDownOpen && (
             <div className="ExportData-dropdown">
               <ul>
-                {csvExport && (
-                  <li className="dropdownOptionExportData">
-                    {
-                      <button
-                        onClick={() => handleExportCsv()}
-                        className="ExportDataLi_btn"
+                {exportTypes.map(
+                  (exportType, index) =>
+                    exportType.enabled && (
+                      <li
+                        className="dropdownOptionExportData"
+                        key={`li-${exportType.text}`}
                       >
-                        Export to CSV
-                      </button>
-                    }
-                  </li>
-                )}
-                {excelExport && (
-                  <li>
-                    {
-                      <button
-                        onClick={() => handleExportExcel()}
-                        className="ExportDataLi_btn"
-                      >
-                        Export to Excel
-                      </button>
-                    }
-                  </li>
-                )}
-                {pdfExport && (
-                  <li>
-                    {
-                      <button
-                        onClick={() => handleExportPdf()}
-                        className="ExportDataLi_btn"
-                      >
-                        Export to PDF
-                      </button>
-                    }
-                  </li>
+                        <ExportButton
+                          index={index}
+                          isFocused={index === focusedButtonIndex}
+                          exportHandler={exportType.handler}
+                          label={exportType.text}
+                        />
+                      </li>
+                    ),
                 )}
               </ul>
             </div>
