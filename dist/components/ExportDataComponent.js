@@ -15,12 +15,17 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { exportToCsv, exportToExcel, exportToPdf } from '../utils/exportData';
 import './../styles/exportDataComponant.css';
 export var ExportDataComponent = function (_a) {
-    var filteredData = _a.filteredData, columnsManaged = _a.columnsManaged, headerProperty = _a.headerProperty, csvExport = _a.csvExport, excelExport = _a.excelExport, pdfExport = _a.pdfExport;
-    var _b = useState(false), isDropDownOpen = _b[0], setIsDropDownOpen = _b[1];
+    var filteredData = _a.filteredData, columnsManaged = _a.columnsManaged, headerProperty = _a.headerProperty, csvExport = _a.csvExport, excelExport = _a.excelExport, pdfExport = _a.pdfExport, _b = _a.background, background = _b === void 0 ? '#677e11' : _b, _c = _a.color, color = _c === void 0 ? 'white' : _c, _d = _a.hoverBackground, hoverBackground = _d === void 0 ? '#7e9b16' : _d;
+    var _e = useState(false), isDropDownOpen = _e[0], setIsDropDownOpen = _e[1];
     var exportDataRef = useRef(null);
-    var _c = useState(-1), focusedButtonIndex = _c[0], setFocusedButtonIndex = _c[1];
+    var _f = useState(-1), focusedButtonIndex = _f[0], setFocusedButtonIndex = _f[1];
     var toggleButtonRef = useRef(null);
     var singleButtonRef = useRef(null);
+    var style = {
+        '--background-color': background,
+        '--color': color,
+        '--hover-background-color': hoverBackground,
+    };
     var numberOfExportOptions = [csvExport, excelExport, pdfExport].filter(Boolean).length;
     var handleExportCsv = function () {
         exportToCsv(filteredData, columnsManaged, headerProperty, 'export.csv');
@@ -139,11 +144,11 @@ export var ExportDataComponent = function (_a) {
         var exportHandler = _a.exportHandler, label = _a.label, isFocused = _a.isFocused, index = _a.index;
         return (_jsx("button", __assign({ ref: index === 0 ? singleButtonRef : null, onClick: exportHandler, onFocus: function () {
                 setFocusedButtonIndex(index);
-            }, className: "ExportDataLi_btn ".concat(isFocused ? 'focused' : ''), tabIndex: 0 }, { children: _jsx("span", { children: label }) })));
+            }, className: "ExportDataLi_btn ".concat(isFocused ? 'focused' : '', " customComponent"), tabIndex: 0, style: style }, { children: _jsx("span", { children: label }) })));
     };
     return (_jsxs("div", __assign({ className: "box-ExportData ".concat(isDropDownOpen ? 'box-ExportDataOpen' : ''), role: "menu", ref: exportDataRef }, { children: [numberOfExportOptions === 1 && (_jsx("div", __assign({ className: "toggle-btnExportData btnExportOne" }, { children: exportTypes.map(function (exportType, index) {
                     return exportType.enabled && (_jsx(ExportButton, { isFocused: index === focusedButtonIndex, index: index, exportHandler: exportType.handler, label: exportType.text }, exportType.text));
-                }) }))), numberOfExportOptions > 1 && (_jsxs(_Fragment, { children: [_jsxs("button", __assign({ ref: toggleButtonRef, className: "toggle-btnExportData toggle-btnsExport ".concat(isDropDownOpen ? 'btnOpenExportData' : ''), onClick: toggleDropDown, "aria-label": "export data", "aria-haspopup": "true", "aria-expanded": isDropDownOpen }, { children: [_jsx("span", __assign({ className: isDropDownOpen ? 'btnExportDataOpen' : '' }, { children: "Export" })), !isDropDownOpen ? _jsx(FiChevronDown, {}) : _jsx(FiChevronUp, {})] })), isDropDownOpen && (_jsx("div", __assign({ className: "ExportData-dropdown" }, { children: _jsx("ul", { children: exportTypes.map(function (exportType, index) {
+                }) }))), numberOfExportOptions > 1 && (_jsxs(_Fragment, { children: [_jsxs("button", __assign({ ref: toggleButtonRef, className: "toggle-btnExportData toggle-btnsExport ".concat(isDropDownOpen ? 'btnOpenExportData' : '', " customComponent"), onClick: toggleDropDown, "aria-label": "export data", "aria-haspopup": "true", "aria-expanded": isDropDownOpen, style: style }, { children: [_jsx("span", __assign({ className: isDropDownOpen ? 'btnExportDataOpen' : '' }, { children: "Export" })), !isDropDownOpen ? _jsx(FiChevronDown, {}) : _jsx(FiChevronUp, {})] })), isDropDownOpen && (_jsx("div", __assign({ className: "ExportData-dropdown" }, { children: _jsx("ul", { children: exportTypes.map(function (exportType, index) {
                                 return exportType.enabled && (_jsx("li", __assign({ className: "dropdownOptionExportData" }, { children: _jsx(ExportButton, { index: index, isFocused: index === focusedButtonIndex, exportHandler: exportType.handler, label: exportType.text }) }), "li-".concat(exportType.text)));
                             }) }) })))] }))] })));
 };

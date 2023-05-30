@@ -23,6 +23,9 @@ interface ExportDataComponentProps<T> {
   csvExport?: boolean;
   excelExport?: boolean;
   pdfExport?: boolean;
+  background?: string;
+  color?: string;
+  hoverBackground?: string;
 }
 
 interface ExportButtonProps {
@@ -39,12 +42,20 @@ export const ExportDataComponent = <T,>({
   csvExport,
   excelExport,
   pdfExport,
+  background = '#677e11',
+  color = 'white',
+  hoverBackground = '#7e9b16',
 }: ExportDataComponentProps<T>): JSX.Element => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const exportDataRef = useRef<HTMLDivElement>(null);
   const [focusedButtonIndex, setFocusedButtonIndex] = useState(-1);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const singleButtonRef = useRef<HTMLButtonElement>(null);
+  const style = {
+    '--background-color': background,
+    '--color': color,
+    '--hover-background-color': hoverBackground,
+  } as React.CSSProperties;
 
   const numberOfExportOptions = [csvExport, excelExport, pdfExport].filter(
     Boolean,
@@ -197,8 +208,9 @@ export const ExportDataComponent = <T,>({
       onFocus={() => {
         setFocusedButtonIndex(index);
       }}
-      className={`ExportDataLi_btn ${isFocused ? 'focused' : ''}`}
+      className={`ExportDataLi_btn ${isFocused ? 'focused' : ''} customComponent`}
       tabIndex={0}
+      style={style}
     >
       <span>{label}</span>
     </button>
@@ -232,11 +244,12 @@ export const ExportDataComponent = <T,>({
             ref={toggleButtonRef}
             className={`toggle-btnExportData toggle-btnsExport ${
               isDropDownOpen ? 'btnOpenExportData' : ''
-            }`}
+            } customComponent`}
             onClick={toggleDropDown}
             aria-label="export data"
             aria-haspopup="true"
             aria-expanded={isDropDownOpen}
+            style={style}
           >
             <span className={isDropDownOpen ? 'btnExportDataOpen' : ''}>
               Export

@@ -16,6 +16,9 @@ interface ExportDataComponentProps<T> {
     csvExport?: boolean;
     excelExport?: boolean;
     pdfExport?: boolean;
+    background?: string;
+    color?: string;
+    hoverBackground?: string;
 }
-export declare const ExportDataComponent: <T>({ filteredData, columnsManaged, headerProperty, csvExport, excelExport, pdfExport, }: ExportDataComponentProps<T>) => JSX.Element;
+export declare const ExportDataComponent: <T>({ filteredData, columnsManaged, headerProperty, csvExport, excelExport, pdfExport, background, color, hoverBackground, }: ExportDataComponentProps<T>) => JSX.Element;
 export {};

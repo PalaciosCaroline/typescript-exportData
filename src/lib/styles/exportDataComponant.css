@@ -1,3 +1,22 @@
+.customComponent {
+  background-color: var(--background-color);
+  color: var(--color);
+}
+
+.customComponent:focus,
+.customComponent.focused,
+.customComponent:hover {
+  background-color: var(--hover-background-color);
+}
+
+.btnExportOne .customComponent.focused{
+  background-color: #677e11;
+}
+.btnExportOne .customComponent.focused:hover,
+.btnExportOne .customComponent.focused:focus{
+  background-color: #7e9b16;
+} 
+
 .box-ExportData {
   width: 170px;
   height: 45px;
@@ -32,29 +51,14 @@ ul {
   z-index: 40;
   white-space: nowrap;
   height: 45px;
-  background-color: #677e11;
   width: 100%;
   border: none;
-  color: #fff;
-}
-
-.toggle-btnExportData:hover,
-.toggle-btnExportData:focus,
-.ExportDataLi_btn.focused,
-.ExportDataLi_btn:hover {
-  background-color: #7e9b16;
+  /* color: #fff; */
 }
 
 .toggle-btnExportData {
   margin: 0;
   width: 100%;
-}
-
-.btnExportOne .ExportDataLi_btn.focused{
-  background-color: #677e11;
-}
-.btnExportOne .ExportDataLi_btn.focused:focus{
-  background-color: #7e9b16;
 }
 
 .toggle-btnsExport, .toggle-btnExportData button{

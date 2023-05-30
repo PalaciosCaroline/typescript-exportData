@@ -141,6 +141,27 @@ To use this package, you can use the examples like the data in the following exa
 
 ## Customize the style'component
 
+The default style :
+  background = '#677e11',
+  color = 'white',
+  hoverBackground = '#7e9b16'
+
+example:
+
+```js
+  <ExportDataComponent
+      filteredData={filteredData}
+      columnsManaged={columnsManaged} 
+      headerProperty='label' 
+      csvExport={true}
+      excelExport={true} 
+      pdfExport={true} 
+      background='blue' //change background button and dropdown
+      color='#000' //change color button and dropdown
+      hoverBackground='darkBlue' //change background :hover button and dropdown
+    />
+```
+
 To customize the style of the component, you can increase the specificity of your CSS rules. This means that you can target the component more precisely by adding more specific selectors to your CSS rules.
 
 For example, to change the background color of the th of the table, you can use the following CSS rule
