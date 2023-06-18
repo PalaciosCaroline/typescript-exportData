@@ -82,21 +82,17 @@ export const ExportDataComponent = <T,>({
     },
     { enabled: pdfExport, handler: handleExportPdf, text: 'Export to PDF' },
   ];
+  
+  const toggleDropDownExport = useCallback(() => {
+    setIsDropDownOpen((prevIsOpen) => {
+      if (!prevIsOpen) {
+        setFocusedButtonIndex(0);
+      }
+      return !prevIsOpen;
+    });
+  }, []);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      exportDataRef.current &&
-      !exportDataRef.current.contains(event.target as Node)
-    ) {
-      setIsDropDownOpen(false);
-    }
-  };
-
-  const toggleDropDown = () => {
-    setIsDropDownOpen(!isDropDownOpen);
-  };
-
-  const handleKeyDown = useCallback(
+  const handleKeyDownExport = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
         case 'Tab':
@@ -107,16 +103,16 @@ export const ExportDataComponent = <T,>({
           // Let the event propagate to preserve default tab behavior
           break;
         case 'ArrowUp':
-          event.preventDefault();
           if (isDropDownOpen) {
+            event.preventDefault();
             setFocusedButtonIndex((prevIndex) =>
               prevIndex > 0 ? prevIndex - 1 : prevIndex,
             );
           }
           break;
         case 'ArrowDown':
-          event.preventDefault();
           if (isDropDownOpen) {
+            event.preventDefault();
             setFocusedButtonIndex((prevIndex) =>
               prevIndex < exportTypes.length - 1 ? prevIndex + 1 : prevIndex,
             );
@@ -125,30 +121,31 @@ export const ExportDataComponent = <T,>({
 
         case 'Enter':
         case ' ':
-          event.preventDefault();
-          if (numberOfExportOptions === 1) {
-            // If there is only one export option, check if the single export button is currently focused
-            if (document.activeElement === singleButtonRef.current) {
-              const singleExportType = exportTypes.find(
-                (exportType) => exportType.enabled,
-              );
-              if (singleExportType) {
-                singleExportType.handler();
-              }
-            }
-          } else {
-            // Check if the dropdown toggle button is currently focused
-            if (document.activeElement === toggleButtonRef.current) {
-              if (isDropDownOpen && focusedButtonIndex >= 0) {
-                const focusedButton = exportTypes[focusedButtonIndex];
-                if (focusedButton && focusedButton.enabled) {
-                  focusedButton.handler();
+            if (numberOfExportOptions === 1) {
+              // If there is only one export option, check if the single export button is currently focused
+              if (document.activeElement === singleButtonRef.current) {
+                const singleExportType = exportTypes.find(
+                  (exportType) => exportType.enabled,
+                );
+                if (singleExportType) {
+                  singleExportType.handler();
                 }
-              } else if (!isDropDownOpen) {
-                toggleDropDown();
+              }
+            } else {
+              // Check if the dropdown toggle button is currently focused
+              if (document.activeElement === toggleButtonRef.current) {
+                event.preventDefault();
+                if (isDropDownOpen && focusedButtonIndex >= 0) {
+
+                  const focusedButton = exportTypes[focusedButtonIndex];
+                  if (focusedButton && focusedButton.enabled) {
+                    focusedButton.handler();
+                  }
+                } else if (!isDropDownOpen) {
+                  toggleDropDownExport();
+                }
               }
             }
-          }
           break;
 
         default:
@@ -166,14 +163,12 @@ export const ExportDataComponent = <T,>({
   );
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDownExport);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDownExport);
     };
-  }, [handleKeyDown]);
+  }, [handleKeyDownExport]);
 
   useEffect(() => {
     if (
@@ -204,11 +199,19 @@ export const ExportDataComponent = <T,>({
   }) => (
     <button
       ref={index === 0 ? singleButtonRef : null}
-      onClick={exportHandler}
-      onFocus={() => {
-        setFocusedButtonIndex(index);
+      onClick={exportHandler} 
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault(); 
+          exportHandler();
+          setIsDropDownOpen(false);
+          setFocusedButtonIndex(-1);
+          toggleButtonRef.current?.focus();
+        }
       }}
-      className={`ExportDataLi_btn ${isFocused ? 'focused' : ''} customComponent`}
+      className={`ExportDataLi_btn ${
+        isFocused ? 'focused' : ''
+      } customComponent`}
       tabIndex={0}
       style={style}
     >
@@ -231,6 +234,7 @@ export const ExportDataComponent = <T,>({
                   isFocused={index === focusedButtonIndex}
                   key={exportType.text}
                   index={index}
+                  // exportHandler={handleOptionSelected(exportType.handler)}
                   exportHandler={exportType.handler}
                   label={exportType.text}
                 />
@@ -245,7 +249,7 @@ export const ExportDataComponent = <T,>({
             className={`toggle-btnExportData toggle-btnsExport ${
               isDropDownOpen ? 'btnOpenExportData' : ''
             } customComponent`}
-            onClick={toggleDropDown}
+            onClick={toggleDropDownExport}
             aria-label="export data"
             aria-haspopup="true"
             aria-expanded={isDropDownOpen}

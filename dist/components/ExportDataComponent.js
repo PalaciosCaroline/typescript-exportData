@@ -45,16 +45,15 @@ export var ExportDataComponent = function (_a) {
         },
         { enabled: pdfExport, handler: handleExportPdf, text: 'Export to PDF' },
     ];
-    var handleClickOutside = function (event) {
-        if (exportDataRef.current &&
-            !exportDataRef.current.contains(event.target)) {
-            setIsDropDownOpen(false);
-        }
-    };
-    var toggleDropDown = function () {
-        setIsDropDownOpen(!isDropDownOpen);
-    };
-    var handleKeyDown = useCallback(function (event) {
+    var toggleDropDownExport = useCallback(function () {
+        setIsDropDownOpen(function (prevIsOpen) {
+            if (!prevIsOpen) {
+                setFocusedButtonIndex(0);
+            }
+            return !prevIsOpen;
+        });
+    }, []);
+    var handleKeyDownExport = useCallback(function (event) {
         switch (event.key) {
             case 'Tab':
                 // Close dropdown on tab
@@ -64,16 +63,16 @@ export var ExportDataComponent = function (_a) {
                 // Let the event propagate to preserve default tab behavior
                 break;
             case 'ArrowUp':
-                event.preventDefault();
                 if (isDropDownOpen) {
+                    event.preventDefault();
                     setFocusedButtonIndex(function (prevIndex) {
                         return prevIndex > 0 ? prevIndex - 1 : prevIndex;
                     });
                 }
                 break;
             case 'ArrowDown':
-                event.preventDefault();
                 if (isDropDownOpen) {
+                    event.preventDefault();
                     setFocusedButtonIndex(function (prevIndex) {
                         return prevIndex < exportTypes.length - 1 ? prevIndex + 1 : prevIndex;
                     });
@@ -81,7 +80,6 @@ export var ExportDataComponent = function (_a) {
                 break;
             case 'Enter':
             case ' ':
-                event.preventDefault();
                 if (numberOfExportOptions === 1) {
                     // If there is only one export option, check if the single export button is currently focused
                     if (document.activeElement === singleButtonRef.current) {
@@ -94,6 +92,7 @@ export var ExportDataComponent = function (_a) {
                 else {
                     // Check if the dropdown toggle button is currently focused
                     if (document.activeElement === toggleButtonRef.current) {
+                        event.preventDefault();
                         if (isDropDownOpen && focusedButtonIndex >= 0) {
                             var focusedButton = exportTypes[focusedButtonIndex];
                             if (focusedButton && focusedButton.enabled) {
@@ -101,7 +100,7 @@ export var ExportDataComponent = function (_a) {
                             }
                         }
                         else if (!isDropDownOpen) {
-                            toggleDropDown();
+                            toggleDropDownExport();
                         }
                     }
                 }
@@ -118,13 +117,11 @@ export var ExportDataComponent = function (_a) {
         singleButtonRef,
     ]);
     useEffect(function () {
-        document.addEventListener('mousedown', handleClickOutside);
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keydown', handleKeyDownExport);
         return function () {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keydown', handleKeyDownExport);
         };
-    }, [handleKeyDown]);
+    }, [handleKeyDownExport]);
     useEffect(function () {
         if (isDropDownOpen &&
             focusedButtonIndex >= 0 &&
@@ -142,13 +139,22 @@ export var ExportDataComponent = function (_a) {
     }, [focusedButtonIndex, isDropDownOpen, exportTypes.length]);
     var ExportButton = function (_a) {
         var exportHandler = _a.exportHandler, label = _a.label, isFocused = _a.isFocused, index = _a.index;
-        return (_jsx("button", __assign({ ref: index === 0 ? singleButtonRef : null, onClick: exportHandler, onFocus: function () {
-                setFocusedButtonIndex(index);
+        return (_jsx("button", __assign({ ref: index === 0 ? singleButtonRef : null, onClick: exportHandler, onKeyDown: function (event) {
+                var _a;
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    exportHandler();
+                    setIsDropDownOpen(false);
+                    setFocusedButtonIndex(-1);
+                    (_a = toggleButtonRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+                }
             }, className: "ExportDataLi_btn ".concat(isFocused ? 'focused' : '', " customComponent"), tabIndex: 0, style: style }, { children: _jsx("span", { children: label }) })));
     };
     return (_jsxs("div", __assign({ className: "box-ExportData ".concat(isDropDownOpen ? 'box-ExportDataOpen' : ''), role: "menu", ref: exportDataRef }, { children: [numberOfExportOptions === 1 && (_jsx("div", __assign({ className: "toggle-btnExportData btnExportOne" }, { children: exportTypes.map(function (exportType, index) {
-                    return exportType.enabled && (_jsx(ExportButton, { isFocused: index === focusedButtonIndex, index: index, exportHandler: exportType.handler, label: exportType.text }, exportType.text));
-                }) }))), numberOfExportOptions > 1 && (_jsxs(_Fragment, { children: [_jsxs("button", __assign({ ref: toggleButtonRef, className: "toggle-btnExportData toggle-btnsExport ".concat(isDropDownOpen ? 'btnOpenExportData' : '', " customComponent"), onClick: toggleDropDown, "aria-label": "export data", "aria-haspopup": "true", "aria-expanded": isDropDownOpen, style: style }, { children: [_jsx("span", __assign({ className: isDropDownOpen ? 'btnExportDataOpen' : '' }, { children: "Export" })), !isDropDownOpen ? _jsx(FiChevronDown, {}) : _jsx(FiChevronUp, {})] })), isDropDownOpen && (_jsx("div", __assign({ className: "ExportData-dropdown" }, { children: _jsx("ul", { children: exportTypes.map(function (exportType, index) {
+                    return exportType.enabled && (_jsx(ExportButton, { isFocused: index === focusedButtonIndex, index: index, 
+                        // exportHandler={handleOptionSelected(exportType.handler)}
+                        exportHandler: exportType.handler, label: exportType.text }, exportType.text));
+                }) }))), numberOfExportOptions > 1 && (_jsxs(_Fragment, { children: [_jsxs("button", __assign({ ref: toggleButtonRef, className: "toggle-btnExportData toggle-btnsExport ".concat(isDropDownOpen ? 'btnOpenExportData' : '', " customComponent"), onClick: toggleDropDownExport, "aria-label": "export data", "aria-haspopup": "true", "aria-expanded": isDropDownOpen, style: style }, { children: [_jsx("span", __assign({ className: isDropDownOpen ? 'btnExportDataOpen' : '' }, { children: "Export" })), !isDropDownOpen ? _jsx(FiChevronDown, {}) : _jsx(FiChevronUp, {})] })), isDropDownOpen && (_jsx("div", __assign({ className: "ExportData-dropdown" }, { children: _jsx("ul", { children: exportTypes.map(function (exportType, index) {
                                 return exportType.enabled && (_jsx("li", __assign({ className: "dropdownOptionExportData" }, { children: _jsx(ExportButton, { index: index, isFocused: index === focusedButtonIndex, exportHandler: exportType.handler, label: exportType.text }) }), "li-".concat(exportType.text)));
                             }) }) })))] }))] })));
 };
